@@ -14,7 +14,7 @@ open class BasicImperator: Imperator {
     override fun dispatch(originalOrder: Order) {
         var order = originalOrder
 
-        spies.filter { soldier -> soldier.getWatchtowers().all { watchtower -> watchtower.allow(order) } }.forEach { spy -> order = spy.fiddle(order) }
+        spies.forEach { spy -> if(spy.getWatchtowers().all { watchtower -> watchtower.allow(order) }) order = spy.fiddle(order) }
         scouts.forEach { scout -> scout.addAnnouncements(order) }
         soldiers.filter { soldier -> soldier.getWatchtowers().all { watchtower -> watchtower.allow(order) } }.forEach { soldier -> soldier.command(order) }
     }
