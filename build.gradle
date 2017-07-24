@@ -38,7 +38,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-task writeNewPom {
+task pom {
     doLast {
         pom {
 
