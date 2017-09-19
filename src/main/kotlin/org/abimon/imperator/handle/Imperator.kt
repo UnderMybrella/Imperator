@@ -1,7 +1,5 @@
 package org.abimon.imperator.handle
 
-import java.util.*
-
 /**
  * Here we go. It's the Big Bad Imperator.
  *
@@ -14,16 +12,16 @@ import java.util.*
  * [Scout]s do not receive the opportunity to add [Announcement]s until *after* the [Spies][Spy] have had their fun
  */
 interface Imperator {
-    fun dispatch(originalOrder: Order)
+    fun dispatch(originalOrder: Order): List<Soldier>
 
     fun hireScout(scout: Scout)
-    fun fireScout(scout: Scout): Optional<Scout>
-    fun fireScoutByName(spyName: String): Optional<Scout>
+    fun fireScout(scout: Scout): Scout?
+    fun fireScoutByName(spyName: String): Scout?
     fun fireAllScouts()
 
     fun hireSoldier(soldier: Soldier)
-    fun fireSoldier(soldier: Soldier): Optional<Soldier>
-    fun fireSoldierByName(soldierName: String): Optional<Soldier>
+    fun fireSoldier(soldier: Soldier): Soldier?
+    fun fireSoldierByName(soldierName: String): Soldier?
     fun fireAllSoldiers()
 
     /**
@@ -31,11 +29,11 @@ interface Imperator {
      * A lower priority means it will modofiy the
      */
     fun hireSpy(spy: Spy, priority: Int = 0)
-    fun fireSpy(spy: Spy): Optional<Spy>
-    fun fireSpyByName(spyName: String): Optional<Spy>
+    fun fireSpy(spy: Spy): Spy?
+    fun fireSpyByName(spyName: String): Spy?
     fun fireAllSpies()
 
-    fun getScouts(): List<Scout>
-    fun getSoldiers(): List<Soldier>
-    fun getSpies(): List<Spy>
+    val scouts: List<Scout>
+    val soldiers: List<Soldier>
+    val spies: List<Spy>
 }

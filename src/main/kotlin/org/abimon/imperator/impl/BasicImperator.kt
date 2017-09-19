@@ -7,28 +7,29 @@ import java.util.*
  * Basic implementation of an [Imperator]
  */
 open class BasicImperator: Imperator {
-    private val spies = LinkedList<Spy>()
-    val scouts = ArrayList<Scout>()
-    val soldiers = ArrayList<Soldier>()
+    override val spies = LinkedList<Spy>()
+    override val scouts = ArrayList<Scout>()
+    override val soldiers = ArrayList<Soldier>()
 
-    override fun dispatch(originalOrder: Order) {
+    override fun dispatch(originalOrder: Order): List<Soldier> {
         var order = originalOrder
 
-        spies.forEach { spy -> if(spy.getWatchtowers().all { watchtower -> watchtower.allow(order) }) order = spy.fiddle(order) }
+        spies.forEach { spy -> if (spy.getWatchtowers().all { watchtower -> watchtower.allow(order) }) order = spy.fiddle(order) }
         scouts.forEach { scout -> scout.addAnnouncements(order) }
-        soldiers.filter { soldier -> soldier.getWatchtowers().all { watchtower -> watchtower.allow(order) } }.forEach { soldier -> soldier.command(order) }
+        val applicable = soldiers.filter { soldier -> soldier.getWatchtowers().all { watchtower -> watchtower.allow(order) } }
+        applicable.forEach { soldier -> soldier.command(order) }
+
+        return applicable
     }
 
     override fun hireSpy(spy: Spy, priority: Int) = spies.add(priority.coerceAtLeast(0).coerceAtMost(spies.size), spy)
-    override fun getSpies(): List<Spy> = spies
-    override fun fireSpy(spy: Spy): Optional<Spy> {
+    override fun fireSpy(spy: Spy): Spy? {
         if(spies.remove(spy))
-            return Optional.of(spy)
-        return Optional.empty()
+            return spy
+        return null
     }
-    override fun fireSpyByName(spyName: String): Optional<Spy> {
-        val spy = spies.firstOrNull { spy -> spy.getName() == spyName } ?: return Optional.empty()
-        return fireSpy(spy)
+    override fun fireSpyByName(spyName: String): Spy? {
+        return fireSpy(spies.firstOrNull { spy -> spy.getName() == spyName } ?: return null)
     }
     override fun fireAllSpies() = spies.clear()
 
@@ -36,30 +37,26 @@ open class BasicImperator: Imperator {
         scout.setImperator(this)
         scouts.add(scout)
     }
-    override fun getScouts(): List<Scout> = scouts
-    override fun fireScout(scout: Scout): Optional<Scout> {
+    override fun fireScout(scout: Scout): Scout? {
         if(scouts.remove(scout))
-            return Optional.of(scout)
-        return Optional.empty()
+            return scout
+        return null
     }
-    override fun fireScoutByName(spyName: String): Optional<Scout> {
-        val scout = scouts.firstOrNull { scout -> scout.getName() == spyName } ?: return Optional.empty()
-        return fireScout(scout)
+    override fun fireScoutByName(spyName: String): Scout? {
+        return fireScout(scouts.firstOrNull { scout -> scout.getName() == spyName } ?: return null)
     }
     override fun fireAllScouts() = scouts.clear()
 
     override fun hireSoldier(soldier: Soldier) {
         soldiers.add(soldier)
     }
-    override fun getSoldiers(): List<Soldier> = soldiers
-    override fun fireSoldier(soldier: Soldier): Optional<Soldier> {
+    override fun fireSoldier(soldier: Soldier): Soldier? {
         if(soldiers.remove(soldier))
-            return Optional.of(soldier)
-        return Optional.empty()
+            return soldier
+        return null
     }
-    override fun fireSoldierByName(soldierName: String): Optional<Soldier> {
-        val soldier = soldiers.firstOrNull { soldier -> soldier.getName() == soldierName } ?: return Optional.empty()
-        return fireSoldier(soldier)
+    override fun fireSoldierByName(soldierName: String): Soldier? {
+        return fireSoldier(soldiers.firstOrNull { soldier -> soldier.getName() == soldierName } ?: return null)
     }
     override fun fireAllSoldiers() = soldiers.clear()
 }
