@@ -24,6 +24,9 @@ interface Imperator {
     fun fireSoldierByName(soldierName: String): Soldier?
     fun fireAllSoldiers()
 
+    fun hireSoldiers(barracks: Any)
+    fun fireSoldiers(barracks: Any)
+
     /**
      * Hires a [Spy] to join the ranks. [priority] is the priority of this spy, and determines the position of the [spy][Spy] in the chain of intrigue.
      * A lower priority means it will modofiy the

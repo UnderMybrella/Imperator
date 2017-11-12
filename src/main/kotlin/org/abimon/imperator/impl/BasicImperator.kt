@@ -2,6 +2,7 @@ package org.abimon.imperator.impl
 
 import org.abimon.imperator.handle.*
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 /**
  * Basic implementation of an [Imperator]
@@ -59,4 +60,18 @@ open class BasicImperator: Imperator {
         return fireSoldier(soldiers.firstOrNull { soldier -> soldier.getName() == soldierName } ?: return null)
     }
     override fun fireAllSoldiers() = soldiers.clear()
+
+    override fun hireSoldiers(barracks: Any) {
+        barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
+            if(Soldier::class.isInstance(recruit))
+                soldiers.add(recruit.get(this) as? Soldier ?: return@forEach)
+        }
+    }
+
+    override fun fireSoldiers(barracks: Any) {
+        barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
+            if(Soldier::class.isInstance(recruit))
+                soldiers.remove(recruit.get(this) as? Soldier ?: return@forEach)
+        }
+    }
 }
