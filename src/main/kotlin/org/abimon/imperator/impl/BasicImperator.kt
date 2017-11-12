@@ -66,14 +66,14 @@ open class BasicImperator: Imperator {
     override fun hireSoldiers(barracks: Any) {
         barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
             if((recruit.returnType.classifier as? KClass<*>)?.isSubclassOf(Soldier::class) == true || recruit.returnType.classifier == Soldier::class)
-                soldiers.add(recruit.get(this) as? Soldier ?: return@forEach)
+                soldiers.add(recruit.get(barracks) as? Soldier ?: return@forEach)
         }
     }
 
     override fun fireSoldiers(barracks: Any) {
         barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
             if((recruit.returnType.classifier as? KClass<*>)?.isSubclassOf(Soldier::class) == true || recruit.returnType.classifier == Soldier::class)
-                soldiers.remove(recruit.get(this) as? Soldier ?: return@forEach)
+                soldiers.remove(recruit.get(barracks) as? Soldier ?: return@forEach)
         }
     }
 }
