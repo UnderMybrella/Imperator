@@ -2,6 +2,8 @@ package org.abimon.imperator.impl
 
 import org.abimon.imperator.handle.*
 import java.util.*
+import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 
 /**
@@ -63,14 +65,14 @@ open class BasicImperator: Imperator {
 
     override fun hireSoldiers(barracks: Any) {
         barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
-            if(Soldier::class.isInstance(recruit))
+            if((recruit.returnType.classifier as? KClass<*>)?.isSubclassOf(Soldier::class) == true || recruit.returnType.classifier == Soldier::class)
                 soldiers.add(recruit.get(this) as? Soldier ?: return@forEach)
         }
     }
 
     override fun fireSoldiers(barracks: Any) {
         barracks.javaClass.kotlin.memberProperties.forEach { recruit ->
-            if(Soldier::class.isInstance(recruit))
+            if((recruit.returnType.classifier as? KClass<*>)?.isSubclassOf(Soldier::class) == true || recruit.returnType.classifier == Soldier::class)
                 soldiers.remove(recruit.get(this) as? Soldier ?: return@forEach)
         }
     }
