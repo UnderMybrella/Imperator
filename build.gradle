@@ -1,5 +1,4 @@
 group 'org.abimon'
-version '1.0'
 
 buildscript {
     ext.kotlin_version = '1.2.50'
