@@ -2,11 +2,10 @@ group 'org.abimon'
 version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.2.0-rc-39'
+    ext.kotlin_version = '1.2.50'
 
     repositories {
         mavenCentral()
-        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -21,13 +20,13 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
